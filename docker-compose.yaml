@@ -1,0 +1,32 @@
+services:
+  ubuntu:
+    build:
+      context: ubuntu
+      dockerfile: Dockerfile
+    depends_on:
+      - python
+      - node
+    volumes:
+      - home:/home/ubuntu
+      # Mount docker socket.
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./ubuntu/bin/double.py:/usr/local/bin/double
+
+  python:
+    build:
+      context: python
+      dockerfile: Dockerfile
+    container_name: python-native
+    volumes:
+      - home:/home/ubuntu
+
+  node:
+    build:
+      context: node
+      dockerfile: Dockerfile
+    container_name: node-native
+    volumes:
+      - home:/home/ubuntu
+
+volumes:
+  home:
